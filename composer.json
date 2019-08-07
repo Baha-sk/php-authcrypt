@@ -1,0 +1,20 @@
+{
+    "name": "gamringer/aries",
+    "type": "project",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Guillaume Amringer",
+            "email": "g.amringer@gmail.com"
+        }
+    ],
+    "require": {
+        "stephenhill/base58": "^1.1",
+        "web-token/jwt-framework": "^2.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "gamringer\\Aries\\": "src/"
+        }
+    }
+}
