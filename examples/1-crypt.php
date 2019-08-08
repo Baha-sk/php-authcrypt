@@ -23,4 +23,4 @@ echo 'Payload     : ' . Base64Url::encode($msg), PHP_EOL;
 echo '--------------------------------', PHP_EOL;
 echo $jwe, PHP_EOL;
 echo '--------------------------------', PHP_EOL;
-print_r($jwe->encode());
+echo json_encode($jwe->encode(), \JSON_PRETTY_PRINT), PHP_EOL;

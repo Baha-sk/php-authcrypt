@@ -61,7 +61,7 @@ class Crypt
 		}
 		sort($keyids);
 
-		return hash('sha256', implode('.', $keyids));
+		return hash('sha256', implode('.', $keyids), true);
 	}
 
 	private function encodeRecipients($symkey)
@@ -78,7 +78,7 @@ class Crypt
 	private function encodeRecipient($symkey, Peer $recipient)
 	{
 		$Z = sodium_crypto_scalarmult($this->sender->getPrivateKey(), $recipient->getPublicKey());
-		$apu = Base64Url::encode(random_bytes(32));
+		$apu = Base64Url::encode(random_bytes(64));
 		$kek = $this->concatKDF($Z, $apu);
 		$nonce = random_bytes(\SODIUM_CRYPTO_AEAD_XCHACHA20POLY1305_IETF_NPUBBYTES);
 		$kekoutput = sodium_crypto_aead_xchacha20poly1305_ietf_encrypt($symkey, '', $nonce, $kek);
