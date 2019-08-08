@@ -17,7 +17,7 @@ $jwe = new \gamringer\Aries\Crypt($msg, $sender, [$recipient]);
 
 echo 'Sender SK   : ' . Base64Url::encode($sender->getPrivateKey()), PHP_EOL;
 echo 'Sender PK   : ' . Base64Url::encode($sender->getPublicKey()), PHP_EOL;
-echo 'Recipient PK: ' . Base64Url::encode($recipient->getPrivateKey()), PHP_EOL;
+echo 'Recipient SK: ' . Base64Url::encode($recipient->getPrivateKey()), PHP_EOL;
 echo 'Recipient PK: ' . Base64Url::encode($recipient->getPublicKey()), PHP_EOL;
 echo 'Payload     : ' . Base64Url::encode($msg), PHP_EOL;
 echo '--------------------------------', PHP_EOL;
