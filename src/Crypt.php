@@ -92,7 +92,7 @@ class Crypt
 				'tag' => Base64Url::encode($tag),
 				'kid' => $this->base58->encode($recipient->getPublicKey()),
 				'oid' => Base64Url::encode(\sodium_crypto_box_seal(
-					Base64Url::encode($this->sender->getPublicKey()),
+					$this->base58->encode($this->sender->getPublicKey()),
 					$recipient->getPublicKey()
 				)),
 			]
@@ -109,53 +109,3 @@ class Crypt
 		return json_encode($this->encode());
 	}
 }
-
-/*
-
-{
-    "protected": base64url({
-        "typ": "prs.hyperledger.aries-auth-message",
-        "alg": "ECDH+XC20PKW",
-        "enc":"XC20P"
-    }),
-    "recipients": [
-        {
-            "encrypted_key": "base64url(encrypted CEK)",
-            "header": {
-                "iv": "base64url(CEK encryption IV)",
-                "tag": "base64url(CEK authentication tag)",
-            }
-        }
-    ],
-    "aad": "base64url(sha256(concat('.',sort([recipients[0].kid, recipients[n].kid]))))",
-}
-
-{
-    "protected": "eyJ0eXAiOiJwcnMuaHlwZXJsZWRnZXIuYXJpZXMtYXV0aC1tZXNzYWdlIiwiYWxnIjoiRUNESCtYQzIwUEtXIiwiZW5jIjoiWEMyMFAifQ",
-    "recipients": [
-        {
-            "encrypted_key": "whpkJkvHRP0XX-EqxUOHhHIfuW8i5EMuR3Kxlg5NNIU",
-            "header": {
-                "kid": "5jMonJACEPcLfqVaz8jpqBLXHHKYgCE71XYBmFXhjZVX",
-                "iv": "tjGLK6uChZatAyACFzGmFR4V9othKN8S",
-                "tag": "ma9pIjkQuzaqvq_5y5vUlQ",
-                "oid": "lalala"
-            }
-        },
-        {
-            "encrypted_key": "dDHydlp_wlGt_zwR-yUvESx9fXuO-GRJFGtaw2u6CEw",
-            "header": {
-                "kid": "TfVVqzPT1FQHdq1CUDe9XYcg6Wu2QMusWKhGBXEZsosg",
-                "iv": "7SFlGTxQ4Q2l02D9HRNdFeYQnwntyctb",
-                "tag": "9-O6djpNAizix-ZnjAx-Fg",
-                "oid": "lalala"
-            }
-        }
-    ],
-    "aad": "OGY5ZDIxMDE3YTQ4MTc4YWE5MTk0MWQyOGJmYjQ1ZmZmMTYzYTE3ZjUxYjc4YjA3YTlmY2FlMmMwOTFlMjBhZg",
-    "ciphertext": "x1lnQq_pZLgU2ZC4",
-    "tag": "2JgOe9SRjJXddT9TyIjqrg",
-    "iv": "fDGEXswlWXOBx6FxPC_u6qIuhADnOrW1"
-}
-
-*/

@@ -24,3 +24,8 @@ echo '--------------------------------', PHP_EOL;
 echo $jwe, PHP_EOL;
 echo '--------------------------------', PHP_EOL;
 echo json_encode($jwe->encode(), \JSON_PRETTY_PRINT), PHP_EOL;
+
+echo '================================', PHP_EOL;
+$decryptor = new \gamringer\Aries\Decrypt($recipient);
+$payload = $decryptor->decrypt((string)$jwe, $sender);
+echo $payload, PHP_EOL;
