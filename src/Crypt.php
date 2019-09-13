@@ -13,6 +13,7 @@ class Crypt
 	protected $payload;
 	protected $sender;
 	protected $recipients;
+	protected $output;
 
 	public function __construct($payload, Peer $sender, array $recipients)
 	{
@@ -24,6 +25,10 @@ class Crypt
 
 	public function encode()
 	{
+		if (isset($this->output)) {
+			return $this->output;
+		}
+
 		$headers = [
 	        "typ" => "prs.hyperledger.aries-auth-message",
 	        "alg" => "ECDH-SS+XC20PKW",
@@ -43,7 +48,7 @@ class Crypt
 
 		$recipients = $this->encodeRecipients($symkey);
 
-		return [
+		$this->output = [
 			'protected' => $headersEncoded,
 			'recipients' => $recipients,
 			'aad' => $aadEncoded,
@@ -51,6 +56,8 @@ class Crypt
 			'tag' => Base64Url::encode($tag),
 			'ciphertext' => Base64Url::encode($ciphertext),
 		];
+
+		return $this->output;
 	}
 
 	private function buildAAD()
@@ -91,10 +98,10 @@ class Crypt
 				'iv' => Base64Url::encode($nonce),
 				'tag' => Base64Url::encode($tag),
 				'kid' => $this->base58->encode($recipient->getPublicKey()),
-				'oid' => Base64Url::encode(\sodium_crypto_box_seal(
-					$this->base58->encode($this->sender->getPublicKey()),
+				'spk' => (new ProtectedJWK(
+					$this->sender->getPublicKey(),
 					$recipient->getPublicKey()
-				)),
+				))->__toString(),
 			]
 		];
 	}
