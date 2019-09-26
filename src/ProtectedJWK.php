@@ -43,7 +43,7 @@ class ProtectedJWK
 		$pnonce = random_bytes(\SODIUM_CRYPTO_AEAD_XCHACHA20POLY1305_IETF_NPUBBYTES);
 		$symkey = \sodium_crypto_aead_xchacha20poly1305_ietf_keygen();
 
-		list($knonce, $encryptedKey, $ktag) = $this->encryptKey($epk, $symkey);
+		list($knonce, $encryptedKey, $ktag) = $this->encryptKey($esk, $symkey);
 
 		$headers = [
 	        "typ" => "jose",
@@ -83,9 +83,9 @@ class ProtectedJWK
 		];
 	}
 
-	private function encryptKey($epk, $symkey)
+	private function encryptKey($esk, $symkey)
 	{
-		$Z = sodium_crypto_scalarmult($epk, $this->recipientKey);
+		$Z = sodium_crypto_scalarmult($esk, $this->recipientKey);
 		$kek = $this->concatKDF($Z);
 		$nonce = random_bytes(\SODIUM_CRYPTO_AEAD_XCHACHA20POLY1305_IETF_NPUBBYTES);
 		$kekoutput = sodium_crypto_aead_xchacha20poly1305_ietf_encrypt($symkey, '', $nonce, $kek);
